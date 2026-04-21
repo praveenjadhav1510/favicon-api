@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../config/axios.js";
 
 export default async function validateIcon(url) {
   try {

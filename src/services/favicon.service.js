@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../config/axios.js";
 import * as cheerio from "cheerio";
 import cache from "../cache/cache.js";
 import normalizeUrl from "../utils/normalizeUrl.js";
