@@ -1,8 +1,8 @@
-# 🚀 Robust Favicon API
+# Robust Favicon API
 
 A high-performance, resilient API designed to extract the best possible favicon for any website. It uses a multi-stage approach to ensure you always get an icon, even for complex or private URLs.
 
-## ✨ Key Features
+## Key Features
 
 - **Multi-Stage Extraction Strategy**:
     1. **Direct Match**: Attempts to extract high-quality icons directly from the provided URL's HTML.
@@ -16,7 +16,7 @@ A high-performance, resilient API designed to extract the best possible favicon 
 - **Performance**: Integrated **LRU Cache** to minimize external requests and ensure lightning-fast responses.
 - **Secure**: Protected via API Key middleware.
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 1. **Clone the repository**
 2. **Install dependencies**:
@@ -34,7 +34,7 @@ A high-performance, resilient API designed to extract the best possible favicon 
    ```
    The API will be running on `http://localhost:3000`.
 
-## 🚀 API Documentation
+## API Documentation
 
 ### Get Favicon
 **Endpoint:** `POST /api/favicon`  
@@ -67,7 +67,7 @@ A high-performance, resilient API designed to extract the best possible favicon 
 }
 ```
 
-## 🌐 Deployment (Live)
+## Deployment (Live)
 
 This project is optimized for deployment on **Vercel**, but works on any Node.js host.
 
@@ -86,5 +86,5 @@ The API handles requests through a robust 3-step pipeline:
 2. **Validation**: Every candidate icon is verified via a `HEAD` request to ensure it exists and is a valid image.
 3. **Scoring**: Applies a weight-based algorithm to select the most "premium" icon available.
 
-## 🛡️ "Private Subdomain" Logic
+## "Private Subdomain" Logic
 The API is specifically built to handle subdomains that might be private or require authentication. If a specific path or subdomain is unreachable, the API automatically "reduces" the domain to find the main site's branding, ensuring a consistent user experience.
