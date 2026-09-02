@@ -5,6 +5,7 @@ import normalizeUrl from "../utils/normalizeUrl.js";
 import scoreIcon from "../utils/iconScorer.js";
 import validateIcon from "../utils/iconValidator.js";
 import reduceDomain from "../utils/domainReducer.js";
+import { pickManifestIcon } from "../utils/manifestExtractor.js";
 
 /**
  * Extract favicon candidates from a given URL
@@ -86,7 +87,27 @@ export async function getFavicon(req, res) {
     }
 
     /* =====================================================
-       STEP 2: TRY BASE DOMAIN (ONLY IF STEP 1 FAILED)
+       STEP 2: TRY PWA MANIFEST (site.webmanifest / manifest.json)
+       Many sites define their best icons only in a web app
+       manifest, which the plain HTML <link> scan misses.
+    ===================================================== */
+    try {
+      const manifestIcon = await pickManifestIcon(url);
+      if (manifestIcon) {
+        manifestIcon.source = "manifest";
+        cache.set(url, manifestIcon);
+        return res.json({
+          success: true,
+          favicon: manifestIcon,
+          source: "manifest",
+        });
+      }
+    } catch (err) {
+      console.warn("Manifest extraction failed:", err.message);
+    }
+
+    /* =====================================================
+       STEP 3: TRY BASE DOMAIN (ONLY IF PREVIOUS STEPS FAILED)
        console.firebase.google.com → firebase.google.com
     ===================================================== */
     const baseDomain = reduceDomain(url);
@@ -112,7 +133,7 @@ export async function getFavicon(req, res) {
     }
 
     /* =====================================================
-       STEP 3: GOOGLE FAVICON FALLBACK (GUARANTEED)
+       STEP 4: GOOGLE FAVICON FALLBACK (GUARANTEED)
     ===================================================== */
     const fallbackUrl = `https://www.google.com/s2/favicons?sz=256&domain=${baseDomain}`;
 
